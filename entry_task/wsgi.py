@@ -21,13 +21,15 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'entry_task.settings')
 application = get_wsgi_application()
 
 if "window" not in platform.system().lower():
+    print("this is ubuntu")
     monkey.patch_all()
     file_path = os.path.join(config.LOGGING_DIR, "info.txt")
     try:
         os.mkdir(config.LOGGING_DIR)
         pathlib.Path(file_path).touch(mode=777)
-    except:
-        pass
+    except Exception as err:
+        print(err)
+        logging.debug("error=%s" % err)
     logging.basicConfig(filename=config.LOGGING_DIR, filemode='a', format='%(name)s - %(levelname)s - %(message)s')
 
 #logging.info()
