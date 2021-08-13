@@ -15,8 +15,8 @@ DATABASES = {
     'entry_task_db.master': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'entry_task',
-        'USER': 'root',
-        'PASSWORD': '123456',
+        'USER': 'nhungla.phi',
+        'PASSWORD': 'Asdfghjkl123456789@',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'CONN_MAX_AGE': 120,
