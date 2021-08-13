@@ -28,9 +28,9 @@ if "window" not in platform.system().lower():
         os.mkdir(config.LOGGING_DIR)
         pathlib.Path(file_path).touch(mode=777)
     except Exception as err:
-        print(err)
+        print(err, file_path)
         logging.debug("error=%s" % err)
-    logging.basicConfig(filename=config.LOGGING_DIR, filemode='a', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(filename=file_path, filemode='a', format='%(name)s - %(levelname)s - %(message)s')
 
 #logging.info()
 #logging.exception()
