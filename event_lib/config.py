@@ -26,4 +26,4 @@ DATABASES = {
 
 DATABASES["default"] = DATABASES["entry_task_db.master"]
 
-LOGGING_DIR = os.path.join(BASE_DIR.parent, "logs").replace("\\", "/")
+LOGGING_DIR = os.path.join(BASE_DIR.parent.parent, "logs").replace("\\", "/")
