@@ -13,6 +13,7 @@ import pathlib
 import logging
 from gevent import monkey
 from event_lib import config
+from event_lib.constants import DATETIME_FORMAT
 
 from django.core.wsgi import get_wsgi_application
 
@@ -21,16 +22,14 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'entry_task.settings')
 application = get_wsgi_application()
 
 if "window" not in platform.system().lower():
-    print("this is ubuntu")
     monkey.patch_all()
     file_path = os.path.join(config.LOGGING_DIR, "info.txt")
     try:
         os.mkdir(config.LOGGING_DIR)
         pathlib.Path(file_path).touch(mode=777)
-    except Exception as err:
-        print(err, file_path)
-        logging.debug("error=%s" % err)
-    logging.basicConfig(filename=file_path, filemode='a', format='%(name)s - %(levelname)s - %(message)s')
+    except:
+        pass
+    logging.basicConfig(filename=file_path, filemode='a', format='%(message)s', datefmt=DATETIME_FORMAT)
 
 #logging.info()
 #logging.exception()

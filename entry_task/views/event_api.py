@@ -10,17 +10,27 @@ MAX_TIME_RANGE = 30 * 24 * 60 * 60
 
 
 @log_info()
-@validate_params_and_process_header(form=EventGetInfosByIdsSchema, data_format="JSON")
+@validate_params_and_process_header(form=EventCommentSchema, data_format="JSON")
 @verify_access_token()
-def get_infos_by_ids(request, data):
-    event_ids = data["event_ids"]
-    event_dict = event_manager.get_event_infos(event_ids)
-    result = []
-    for event_id in event_ids:
-        if event_id not in event_dict:
-            continue
-        result.append(event_dict[event_id])
-    return api_response_data(Result.SUCCESS, {"event_infos": result})
+def comment(request, data):
+    event_manager.comment_on_event(data["user_id"], data["event_id"], data["comment"])
+    return api_response_data(Result.SUCCESS)
+
+
+@log_info()
+@validate_params_and_process_header(form=EventLikeSchema, data_format="JSON")
+@verify_access_token()
+def like(request, data):
+    event_manager.like_event(data["user_id"], data["event_id"])
+    return api_response_data(Result.SUCCESS)
+
+
+@log_info()
+@validate_params_and_process_header(form=EventGetDetailSchema, data_format="JSON")
+@verify_access_token()
+def get_detail(request, data):
+    detail = event_manager.get_detail(data["event_id"])
+    return api_response_data(Result.SUCCESS, {"event_detail": detail})
 
 
 @log_info()
@@ -36,27 +46,17 @@ def get_ids(request, data):
 
 
 @log_info()
-@validate_params_and_process_header(form=EventGetDetailSchema, data_format="JSON")
+@validate_params_and_process_header(form=EventGetInfosByIdsSchema, data_format="JSON")
 @verify_access_token()
-def get_detail(request, data):
-    detail = event_manager.get_detail(data["event_id"])
-    return api_response_data(Result.SUCCESS, {"event_detail": detail})
-
-
-@log_info()
-@validate_params_and_process_header(form=EventCommentSchema, data_format="JSON")
-@verify_access_token()
-def comment(request, data):
-    event_manager.comment_on_event(data["user_id"], data["event_id"], data["comment"])
-    return api_response_data(Result.SUCCESS)
-
-
-@log_info()
-@validate_params_and_process_header(form=EventLikeSchema, data_format="JSON")
-@verify_access_token()
-def like(request, data):
-    event_manager.like_event(data["user_id"], data["event_id"])
-    return api_response_data(Result.SUCCESS)
+def get_infos_by_ids(request, data):
+    event_ids = data["event_ids"]
+    event_dict = event_manager.get_event_infos(event_ids)
+    result = []
+    for event_id in event_ids:
+        if event_id not in event_dict:
+            continue
+        result.append(event_dict[event_id])
+    return api_response_data(Result.SUCCESS, {"event_infos": result})
 
 
 @log_info()

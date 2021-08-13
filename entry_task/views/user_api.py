@@ -14,16 +14,6 @@ def create_user(request, data):
 
 
 @log_info()
-@validate_params_and_process_header(form=UserPreLoginSchema, data_format="JSON")
-def pre_login(request, data):
-    user_id = data["user_id"]
-    user_info = user_manager.get_user_infos_by_ids([user_id]).get(user_id)
-    if not user_info:
-        return api_response_data(Result.ERROR_ACCOUNT_NOT_EXISTED)
-    return api_response_data(Result.SUCCESS, {"salt": user_info["salt"]})
-
-
-@log_info()
 @validate_params_and_process_header(form=UserLoginSchema, data_format="JSON")
 def login(request, data):
     user_id = data["user_id"]
@@ -34,3 +24,13 @@ def login(request, data):
     if not access_token:
         return api_response_data(Result.ERROR_SOMETHING_WRONG)
     return api_response_data(Result.SUCCESS, {"access_token": access_token})
+
+
+@log_info()
+@validate_params_and_process_header(form=UserPreLoginSchema, data_format="JSON")
+def pre_login(request, data):
+    user_id = data["user_id"]
+    user_info = user_manager.get_user_infos_by_ids([user_id]).get(user_id)
+    if not user_info:
+        return api_response_data(Result.ERROR_ACCOUNT_NOT_EXISTED)
+    return api_response_data(Result.SUCCESS, {"salt": user_info["salt"]})

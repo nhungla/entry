@@ -24,27 +24,18 @@ def create_event(create_uid, start_time, end_time, channel, location, name, imag
     return model.id
 
 
-@cache_data_by_keys(**CACHE_KEY_FUNC_GET_EVENT_INFOS_BY_IDS)
-def get_event_infos(event_ids):
-    models = list(EventDB.EventTab.objects.filter(id__in=event_ids).values())
-    result = {}
-    for model in models:
-        extra_data = model.pop("extra_data")
-        extra_data = ut.from_json(extra_data)
-        model.update({
-            "location": extra_data["location"],
-            "description": extra_data["description"],
-            "image_url": extra_data["image_url"],
-            "name": extra_data["name"],
-        })
-        result[model["id"]] = model
-    return result
-
-
-def get_event_ids(from_time, to_time, channels):
-    result = list(EventDB.EventTab.objects.filter(start_time__lte=from_time, end_time__gte=to_time,
-                                                  channel__in=channels).values_list("id", flat=True))
-    return result
+def comment_on_event(user_id, event_id, comment_detail):
+    try:
+        EventDB.EventCommentTab.objects.create(
+            event_id=event_id,
+            user_id=user_id,
+            extra_data=ut.to_json({
+                "comment": comment_detail,
+            })
+        )
+        remove_key_cache(CACHE_KEY_FUNC_GET_EVENT_DETAIL_BY_ID["cache_prefix"] % event_id)
+    except IntegrityError:
+        pass
 
 
 @one_key_cache_data(**CACHE_KEY_FUNC_GET_EVENT_DETAIL_BY_ID)
@@ -94,15 +85,27 @@ def get_detail(event_id):
     return result
 
 
-def participate_in_event(user_id, event_id):
-    try:
-        EventDB.EventParticipantTab.objects.create(
-            event_id=event_id,
-            user_id=user_id
-        )
-        remove_key_cache(CACHE_KEY_FUNC_GET_EVENT_DETAIL_BY_ID["cache_prefix"] % event_id)
-    except IntegrityError:
-        pass
+def get_event_ids(from_time, to_time, channels):
+    result = list(EventDB.EventTab.objects.filter(start_time__lte=from_time, end_time__gte=to_time,
+                                                  channel__in=channels).values_list("id", flat=True))
+    return result
+
+
+@cache_data_by_keys(**CACHE_KEY_FUNC_GET_EVENT_INFOS_BY_IDS)
+def get_event_infos(event_ids):
+    models = list(EventDB.EventTab.objects.filter(id__in=event_ids).values())
+    result = {}
+    for model in models:
+        extra_data = model.pop("extra_data")
+        extra_data = ut.from_json(extra_data)
+        model.update({
+            "location": extra_data["location"],
+            "description": extra_data["description"],
+            "image_url": extra_data["image_url"],
+            "name": extra_data["name"],
+        })
+        result[model["id"]] = model
+    return result
 
 
 def like_event(user_id, event_id):
@@ -116,14 +119,11 @@ def like_event(user_id, event_id):
         pass
 
 
-def comment_on_event(user_id, event_id, comment_detail):
+def participate_in_event(user_id, event_id):
     try:
-        EventDB.EventCommentTab.objects.create(
+        EventDB.EventParticipantTab.objects.create(
             event_id=event_id,
-            user_id=user_id,
-            extra_data=ut.to_json({
-                "comment": comment_detail,
-            })
+            user_id=user_id
         )
         remove_key_cache(CACHE_KEY_FUNC_GET_EVENT_DETAIL_BY_ID["cache_prefix"] % event_id)
     except IntegrityError:

@@ -9,6 +9,8 @@ from django import http
 from functools import wraps
 from event_lib.constants import Result, DATETIME_FORMAT
 
+logger = logging.getLogger("print_info")
+
 
 def get_timestamp():
     return int(time.time())
@@ -101,10 +103,10 @@ def log_info():
             try:
                 response = func(request, *args, **kwargs)
             except Exception as err:
-                logging.exception("method=%s,url=%s,error=%s" % (request.method, request.get_full_path().encode('utf-8'), err))
+                logger.exception("method=%s,url=%s,error=%s" % (request.method, request.get_full_path().encode('utf-8'), err))
                 raise
             elapsed_time = time.time() - start_time
-            logging.info("elapsed_time=%s,method=%s,url=%s" % (elapsed_time, request.method, request.get_full_path().encode('utf-8')))
+            logger.info("elapsed_time=%s,method=%s,url=%s" % (elapsed_time, request.method, request.get_full_path().encode('utf-8')))
             return response
         return _func
     return _log_info
