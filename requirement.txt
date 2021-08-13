@@ -1,9 +1,0 @@
-redis
-jsonschema==3.2.0
-urllib3
-requests
-cryptography
-django==2.2
-mysqlclient
-gevent
-gunicorn
