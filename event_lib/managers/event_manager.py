@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.db.models import Q
 from event_lib.managers.mysql_models import *
 from event_lib.managers.cache_manager import cache_data_by_keys, CACHE_KEY_FUNC_GET_EVENT_INFOS_BY_IDS, \
     one_key_cache_data, CACHE_KEY_FUNC_GET_EVENT_DETAIL_BY_ID, remove_key_cache
@@ -86,8 +87,8 @@ def get_detail(event_id):
 
 
 def get_event_ids(from_time, to_time, channels):
-    result = list(EventDB.EventTab.objects.filter(start_time__lte=from_time, end_time__gte=to_time,
-                                                  channel__in=channels).values_list("id", flat=True))
+    query = EventDB.EventTab.objects.exclude(Q(start_time__lt=to_time) | Q(end_time__gt=from_time))
+    result = list(query(channel__in=channels).values_list("id", flat=True))
     result.sort()
     return result
 

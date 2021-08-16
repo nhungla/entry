@@ -23,6 +23,7 @@ EVENT_LIKE = ENTRY_TASK_URL + "/event/like"
 EVENT_PARTICIPATE = ENTRY_TASK_URL + "/event/participate"
 EVENT_GET_DETAIL = ENTRY_TASK_URL + "/event/get_detail"
 EVENT_GET_IDS = ENTRY_TASK_URL + "/event/get_ids"
+EVENT_GET_IDS_V2 = ENTRY_TASK_URL + "/event/get_ids_v2"
 EVENT_GET_INFOS_BY_IDS = ENTRY_TASK_URL + "/event/get_infos_by_ids"
 
 MEDIA_UPLOAD_IMAGE = ENTRY_TASK_URL + "/media/upload_image"

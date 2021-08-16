@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!)b^w8$0s#&484rrcqy(u4xtx=g47hlb$0ywngj+zw9$(r4mna'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -84,7 +84,7 @@ DATABASES = config.DATABASES
 
 CACHE_SERVERS = config.CACHE_SERVERS
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 CSRF_COOKIE_SECURE = True
 

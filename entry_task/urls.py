@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^api/event/comment$', event_api.comment),
     url(r'^api/event/get_detail$', event_api.get_detail),
     url(r'^api/event/get_ids$', event_api.get_ids),
+    url(r'^api/event/get_ids_v2$', event_api.get_ids_v2),
     url(r'^api/event/get_infos_by_ids$', event_api.get_infos_by_ids),
     url(r'^api/event/like$', event_api.like),
     url(r'^api/event/participate$', event_api.participate),

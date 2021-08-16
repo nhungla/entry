@@ -7,3 +7,4 @@ django==2.2
 mysqlclient
 gevent
 gunicorn
+django-cors-headers
