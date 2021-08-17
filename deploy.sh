@@ -1,3 +1,4 @@
+cp -f entry_task.conf /etc/nginx/conf.d/
 echo “install required libs and files”
 iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 iptables -I INPUT -p tcp --dport 8000 -j ACCEPT

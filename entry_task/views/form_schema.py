@@ -1,4 +1,5 @@
-from event_lib.constants import Channel, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE, TYPE_UINT8_MAX, TYPE_UINT64_MAX, UserType
+from event_lib.constants import Channel, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE, TYPE_UINT8_MAX, \
+	TYPE_UINT64_MAX, MAX_QUERY_SIZE, UserType
 
 
 def limited_string_schema(min_length, max_length):
@@ -11,6 +12,7 @@ def limited_string_schema(min_length, max_length):
 
 ChannelSchema = {"type": "integer", "minimum": Channel.get_min(), "maximum": Channel.get_max()}
 UInt8Schema = {"type": "integer", "minimum": 0, "maximum": TYPE_UINT8_MAX}
+QuerySizeSchema = {"type": "integer", "minimum": 0, "maximum": MAX_QUERY_SIZE}
 UInt64Schema = {"type": "integer", "minimum": 0, "maximum": TYPE_UINT64_MAX}
 UserTypeSchema = {"type": "integer", "minimum": UserType.get_min(), "maximum": UserType.get_max()}
 
@@ -83,7 +85,7 @@ EventGetIdsSchemaV2 = {
 			"items": UInt8Schema,
 		},
 		"from_id": UInt64Schema,
-		"count": UInt8Schema
+		"count": QuerySizeSchema
 	},
 	"required": ["start_time", "end_time", "channels", "from_id", "count"],
 }

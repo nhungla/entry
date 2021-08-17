@@ -50,11 +50,25 @@ class AdminSmokeTest(unittest.TestCase):
 class EventSmokeTest(unittest.TestCase):
 	def test_get_ids_and_infos(self):
 		request_data = {
-			"start_time": "2021-06-12 00:00:00",
-			"end_time": "2021-07-01 23:59:59",
+			"start_time": "2021-08-12 00:00:00",
+			"end_time": "2021-08-13 23:59:59",
 			"channels": [Channel.FACEBOOK.value, Channel.TIKTOK.value]
 		}
 		result_code, result_data = request_service_api(EVENT_GET_IDS, request_data, access_token)
+		self.assertEqual(result_code, Result.SUCCESS)
+
+		result_code, result_data = request_service_api(EVENT_GET_INFOS_BY_IDS, {"event_ids": result_data["event_ids"]}, access_token)
+		self.assertEqual(result_code, Result.SUCCESS)
+
+	def test_get_ids_and_infos_v2(self):
+		request_data = {
+			"start_time": "2021-08-12 00:00:00",
+			"end_time": "2021-08-20 23:59:59",
+			"channels": [Channel.FACEBOOK.value, Channel.TIKTOK.value],
+			"from_id": 0,
+			"count": 200
+		}
+		result_code, result_data = request_service_api(EVENT_GET_IDS_V2, request_data, access_token)
 		self.assertEqual(result_code, Result.SUCCESS)
 
 		result_code, result_data = request_service_api(EVENT_GET_INFOS_BY_IDS, {"event_ids": result_data["event_ids"]}, access_token)
