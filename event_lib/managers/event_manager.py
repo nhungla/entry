@@ -1,3 +1,5 @@
+import time
+
 from django.db import IntegrityError
 from django.db.models import Q
 from event_lib.managers.mysql_models import *
@@ -95,8 +97,10 @@ def get_event_ids(from_time, to_time, channels):
 
 
 def get_event_ids_v2(from_time, to_time, channels, from_id=0, count=2000):
+    start_time = time.time()
     query = EventDB.EventTab.objects.filter(start_time__gte=from_time, end_time__lte=to_time,
                                                   channel__in=channels, id__gt=from_id).order_by("id")
+    print(time.time() - start_time)
     return list(query.values_list("id", flat=True)[:count])
 
 
