@@ -22,10 +22,12 @@ def get_password_hash(password, salt):
 
 
 if __name__ == "__main__":
+    print("enter start: ")
+    count = int(input())
     print("Start to fill data")
     start_time = ut.get_timestamp()
     password = "12345678910"
-    for i in range(100, 100 + 1001):
+    for i in range(count + 1, count + 1001):
         salt = ut.get_random_string(20)
         EventDB.UserTab.objects.create(
             user_name="nhunglp.%s" % i,
